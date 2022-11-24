@@ -9,14 +9,14 @@ module.exports = {
         const cliente = new Cliente(req.body)
         cliente.id = new Date().getTime()
         Cliente.salvar(cliente)
-        res.status(201).send("")
+        res.status(201).send(cliente)
     },
     delete: (req, res, next) => {
         Cliente.apagarPorId(req.params.id)
         res.status(204).send("")
     },
-    update: (req, res, next) => {
-        let clienteDb = Cliente.buscaPorId(req.params.id)
+    update: async (req, res, next) => {
+        let clienteDb = await Cliente.buscaPorId(req.params.id)
         if(!clienteDb) return res.status(404).send({mensagem: "Cliente não encontrado"})
 
         const cliente = new Cliente(req.body)
