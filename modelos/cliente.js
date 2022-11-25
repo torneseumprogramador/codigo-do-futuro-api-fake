@@ -11,16 +11,9 @@ module.exports = class Cliente {
 
     // metodos staticos
     static async apagarPorId(id){
-        const listaClientes = await this.lista()
-        const listaNova = []
-        for(let i=0; i<listaClientes.length; i++){
-            const clienteDb = listaClientes[i]
-            if(clienteDb.id.toString() !== id.toString()){
-                listaNova.push(clienteDb)
-            }
-        }
-
-        Cliente.salvarJsonDisco(listaNova)
+        const listaClientes = await this.lista();
+        const listaNova = listaClientes.filter(cliente => cliente.id != id);
+        Cliente.salvarJsonDisco(listaNova);
     }
     
     static async buscaPorId(id){
