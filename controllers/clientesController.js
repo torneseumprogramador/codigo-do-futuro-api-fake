@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require("uuid");
 const Cliente = require("../modelos/cliente");
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
     },
     create: (req, res, next) => {
         const cliente = new Cliente(req.body)
-        cliente.id = new Date().getTime()
+        cliente.id = uuidv4();
         Cliente.salvar(cliente)
         res.status(201).send(cliente)
     },
