@@ -17,15 +17,8 @@ module.exports = class Cliente {
     }
     
     static async buscaPorId(id){
-        const listaClientes = await this.lista()
-        for(let i=0; i<listaClientes.length; i++){
-            const clienteDb = listaClientes[i]
-            if(clienteDb.id.toString() === id.toString()){
-                return clienteDb
-            }
-        }
-
-        return null
+        const listaClientes = await this.lista();
+        return listaClientes.find(cliente => cliente.id == id);
     }
 
     static async salvar(cliente){
