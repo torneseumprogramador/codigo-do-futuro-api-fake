@@ -1,6 +1,8 @@
+const { v4: uuidv4 } = require("uuid");
+
 module.exports = class Cliente {
+    id;
     constructor(cliente){
-        this.id = cliente?.id
         this.nome = cliente?.nome
         this.cpf = cliente?.cpf
         this.telefone = cliente?.telefone
@@ -22,27 +24,13 @@ module.exports = class Cliente {
     }
 
     static async salvar(cliente){
-        const listaClientes = await this.lista()
-        let exist = false
-        for(let i=0; i<listaClientes.length; i++){
-            const clienteDb = listaClientes[i]
-            if(clienteDb.id.toString() === cliente.id.toString()){
-                clienteDb.nome = cliente.nome
-                clienteDb.cpf = cliente.cpf
-                clienteDb.endereco = cliente.endereco
-                clienteDb.telefone = cliente.telefone
-                clienteDb.valor = cliente.valor
-                exist = true
-                break
-            }
-        }
-
-        if(!exist){
-            const objectLiteral = {...cliente}
-            listaClientes.push(objectLiteral)
-        }
-
-        Cliente.salvarJsonDisco(listaClientes)
+        const listaClientes = await this.lista();
+        const clienteExiste = listaClientes.includes(cliente);
+        if(!clienteExiste) {
+            cliente.id = uuidv4()
+            listaClientes.push(cliente)
+            Cliente.salvarJsonDisco(listaClientes)
+        } 
     }
 
     static async salvarJsonDisco(clientes){
